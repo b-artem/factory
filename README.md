@@ -1,9 +1,10 @@
 # Factory task
 
-## Please implement your own class Factory which will have the same behavior as Struct class.
+### Please implement your own class Factory which will have the same behavior as Struct class.
 
-## To run the program run main.rb
+### To run the program run main.rb
 
+```ruby
 Customer = Struct.new(:name, :address, :zip)
 # => Customer
 
@@ -15,7 +16,6 @@ joe['name'] # => "Joe Smith"
 joe[:name]  # => "Joe Smith"
 joe[0]      # => "Joe Smith"
 
-
 Customer = Struct.new(:name, :address) do
   def greeting
     "Hello #{name}!"
@@ -23,3 +23,4 @@ Customer = Struct.new(:name, :address) do
 end
 
 Customer.new('Dave', '123 Main').greeting # => "Hello Dave!"
+```
