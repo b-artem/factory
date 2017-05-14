@@ -1,8 +1,8 @@
 # Factory task
 
-### Please implement your own class Factory which will have the same behavior as Struct class.
-
 ### To run the program run main.rb
+
+### Please implement your own class Factory which will have the same behavior as Struct class:
 
 ```ruby
 Customer = Struct.new(:name, :address, :zip)
