@@ -1,34 +1,41 @@
-require 'byebug'
-
 class Factory
 
-  def self.new(*attributes, &block)
-    # super()
-    Class.new do
-      # include Enumerable
-      @@attributes = attributes
-      attr_accessor(*attributes)
+  def self.new(*attrs, &block)
 
-      def initialize(*args)
-        # raise ArgumentError, "Too many arguments" if args.size > @@attributes.size
-        @@attributes.zip(args) do |attribute, value|
-          instance_variable_set("@#{attribute}", value)
+    attrs.each do |atr|
+      raise NameError, "Argument #{atr} should be a symbol" unless atr.is_a? Symbol
+    end
+
+    Class.new do
+      attr_accessor(*attrs)
+
+      define_method :initialize do |*args|
+        raise ArgumentError, "Too many arguments" if args.size > attrs.size
+        attrs.zip(args) { |atr, val| public_send("#{atr}=", val) }
+      end
+
+      define_method :[] do |atr|
+        case atr.class.to_s
+        when 'String', 'Symbol' then public_send(atr)
+        when 'Integer'          then public_send("#{attrs[atr]}")
+        else wrong_type
+        end
+      end
+
+      define_method :[]= do |atr, val|
+        case atr.class.to_s
+        when 'String', 'Symbol' then public_send("#{atr}=", val)
+        when 'Integer'          then public_send("#{attrs[atr]}=", val)
+        else wrong_type
         end
       end
 
       class_eval &block if block_given?
-
-      def [](attribute)
-        if attribute.instance_of?(String) || attribute.instance_of?(Symbol)
-          public_send(attribute)
-        elsif attribute.instance_of?(Integer)
-          public_send("#{@@attributes[attribute]}")
-        else
-          puts "Wrong argument #{attribute}"
-        end
-      end
-
     end
+  end
+
+  def wrong_type
+    raise TypeError, 'You should use type String, Symbol or Integer'
   end
 
 end
