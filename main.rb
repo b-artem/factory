@@ -1,4 +1,4 @@
-require './factory.rb'
+require './factory'
 
 # Example 1
 Customer = Factory.new(:name, :address, :zip)
